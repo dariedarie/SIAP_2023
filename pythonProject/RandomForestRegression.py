@@ -13,11 +13,11 @@ df = pd.read_csv('datasets/cleaned_all_phones.csv')
 # Create a new column 'price_range' based on price ranges
 p_list = []
 for i in df['price(USD)']:
-    if i <=300:
+    if i <=400:
         p_list.append(1)                 #low range price
-    elif i>300 and i<=650:
+    elif i>400 and i<=700:
         p_list.append(2)                 #medium range price
-    elif i>650 and i<=1000:
+    elif i>700 and i<=1000:
         p_list.append(3)                 #high range price
     else:
         p_list.append(4)                 #premium range price
@@ -49,7 +49,7 @@ X = df.drop(['price(USD)'], axis=1)
 y = df['price(USD)']
 
 # Split the data into training and testing sets
-xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size=0.3, random_state=42)
+xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size=0.3, random_state=15)
 
 rf = RandomForestRegressor(random_state=42)
 rf.fit(xtrain, ytrain)
@@ -80,3 +80,10 @@ print(f"Mean of 'price(USD)': {df['price(USD)'].mean()}")
 # df_impact = pd.DataFrame({'feature': X.columns, 'impact': rf.feature_importances_})
 # df_impact.sort_values(by='impact', ascending=False, inplace=True)
 # print(df_impact)
+
+pred_df = pd.DataFrame({
+    'actual price': ytest,
+    'random forest': rf_pred
+})
+
+print(pred_df.head(20))
