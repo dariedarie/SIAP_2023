@@ -29,37 +29,39 @@ def data_preprocessing():
             return None
 
     for df in data:
-        # recnik = {
-        #     'Android 8.1': 'Android 8.0',
-        #     'Android 12L': 'Android 12',
-        #     'Android 9.0 Pie': 'Android 9.0',
-        #     'Android 7.1.1': 'Android 7.0',
-        #     'Android 7.1': 'Android 7.0',
-        #     'Android 7.1.2': 'Android 7.0',
-        #     'Android 7.0.1': 'Android 7.0',
-        #     'Android 8.0 Oreo': 'Android 8.0',
-        #     'Android 8.1 Oreo': 'Android 8.0',
-        #     'Android 6': 'Android 6.0',
-        #     'Android 6.0.1': 'Android 6.0',
-        #     'Android 12 or 13': 'Android 12',
-        #     'Android 10/ Android 11': 'Android 10',
-        #     'iOS 15.4': 'iOS 15',
-        #     'iOS 14.1': 'iOS 14',
-        #     'iOS 11.1.1': 'iOS 11'
-        # }
-        # df['os'] = df['os'].replace(recnik)
-        # df[['os_name', 'os_version']] = df['os'].str.split(n=1, expand=True)
+        recnik = {
+            'Android 8.1': 'Android 8.0',
+            'Android 12L': 'Android 12',
+            'Android 9.0 Pie': 'Android 9.0',
+            'Android 7.1.1': 'Android 7.0',
+            'Android 7.1': 'Android 7.0',
+            'Android 7.1.2': 'Android 7.0',
+            'Android 7.0.1': 'Android 7.0',
+            'Android 8.0 Oreo': 'Android 8.0',
+            'Android 8.1 Oreo': 'Android 8.0',
+            'Android 6': 'Android 6.0',
+            'Android 6.0.1': 'Android 6.0',
+            'Android 12 or 13': 'Android 12',
+            'Android 10/ Android 11': 'Android 10',
+            'iOS 15.4': 'iOS 15',
+            'iOS 14.1': 'iOS 14',
+            'iOS 11.1.1': 'iOS 11'
+        }
+        df['os'] = df['os'].replace(recnik)
+        df[['os_name', 'os_version']] = df['os'].str.split(n=1, expand=True)
         df['number_of_pixels'] = df['resolution'].apply(calculate_pixels)
         # df['announcement_year'] = df.announcement_date.apply(lambda x: x.split('-')[0] if '-' in x else x.split('/')[0]).astype('int64')
         df['announcement_year'] = df['announcement_date'].apply(lambda x: x.split('-')[0]).astype('int32')
-        # df.drop(columns=['os'], inplace=True)
+        df.drop(columns=['os'], inplace=True)
         bool_col = [col for col in df.columns if df[col].dtype == 'bool']
         df[bool_col] = df[bool_col].astype(int)
         outliers = df[(df['weight(g)'] > 450.0) | (df['price(USD)'] > 2000.0) | (df['ram(GB)'] > 15.0)]
         le = LabelEncoder()
         df['brand'] = le.fit_transform(df['brand'])
         df['battery_type'] = le.fit_transform(df['battery_type'])
-        df['os'] = le.fit_transform(df['os'])
+        df['os_name'] = le.fit_transform(df['os_name'])
+        df['os_version'] = le.fit_transform(df['os_version'])
+        #df['os'] = le.fit_transform(df['os'])
         camera = [x for x in df.columns if 'video' in x]
         df['camera_score'] = df[camera].sum(axis=1)
         df.drop(outliers.index, inplace=True)
