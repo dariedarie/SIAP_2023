@@ -7,51 +7,19 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
+from XGBRegression import data_preprocessing
 
-df = pd.read_csv('datasets/cleaned_all_phones.csv')
 
-# Create a new column 'price_range' based on price ranges
-p_list = []
-for i in df['price(USD)']:
-    if i <=400:
-        p_list.append(1)                 #low range price
-    elif i>400 and i<=700:
-        p_list.append(2)                 #medium range price
-    elif i>700 and i<=1000:
-        p_list.append(3)                 #high range price
-    else:
-        p_list.append(4)                 #premium range price
-df['price_range'] = p_list
+xtrain,ytrain,xtest,ytest = data_preprocessing()
+print(ytrain.head())
 
-df['width'] = [int(i.split('x')[0]) for i in df['resolution']]
-df['height'] = [int(i.split('x')[1]) for i in df['resolution']]
+# print(xtrain.isna().sum())
+# nan_rows = xtrain[xtrain.isna().any(axis=1)]
+# print(nan_rows)
 
-le = LabelEncoder()
-df['brand'] = le.fit_transform(df['brand'])
-df['battery_type'] = le.fit_transform(df['battery_type'])
-df['os'] = le.fit_transform(df['os'])
+print(len(xtrain), len(ytrain))
+rf = RandomForestRegressor(random_state=15)
 
-bool_col = [col for col in df.columns if df[col].dtype == 'bool']
-df[bool_col] = df[bool_col].astype(int)
-
-df['announcement_date'] = pd.to_datetime(df['announcement_date'])
-df['year'] = df['announcement_date'].dt.year
-
-camera = [x for x in df.columns if 'video' in x]
-df['camera_score'] = df[camera].sum(axis=1)
-
-df.drop(bool_col, axis=1, inplace=True)
-
-df = df.drop(['phone_name', 'announcement_date', 'resolution'], axis=1)
-
-# Separate features and target variable
-X = df.drop(['price(USD)'], axis=1)
-y = df['price(USD)']
-
-# Split the data into training and testing sets
-xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size=0.3, random_state=15)
-
-rf = RandomForestRegressor(random_state=42)
 rf.fit(xtrain, ytrain)
 
 rf_pred = rf.predict(xtest)
@@ -73,7 +41,7 @@ print(f"Mean Squared Error: {mse}")
 rmse = np.sqrt(mse)
 print(f"Root Mean Squared Error: {rmse}")
 
-print(f"Mean of 'price(USD)': {df['price(USD)'].mean()}")
+print(f"Mean of 'price(USD)': {train_data['price(USD)'].mean()}")
 
 #For testing only!!!!
 # Create a dataframe with feature impact
