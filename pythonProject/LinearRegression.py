@@ -8,6 +8,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from Common import data_preprocessing
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
 
 xtrain,ytrain,xtest,ytest = data_preprocessing()
 
@@ -32,3 +34,10 @@ print(f"Mean Squared Error: {mse}")
 
 rmse = np.sqrt(mse)
 print(f"Root Mean Squared Error: {rmse}")
+
+pred_df = pd.DataFrame({
+    'price from .csv': ytest,
+    'linear prediction': linear_pred
+})
+
+print(pred_df.head(20))

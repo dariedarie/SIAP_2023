@@ -32,3 +32,10 @@ print(f"Mean Squared Error: {mse}")
 
 rmse = np.sqrt(mse)
 print(f"Root Mean Squared Error: {rmse}")
+
+pred_df = pd.DataFrame({
+    'price from .csv': ytest,
+    'svm prediction': svm_pred
+})
+
+print(pred_df.head(20))
