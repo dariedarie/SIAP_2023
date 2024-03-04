@@ -41,3 +41,18 @@ pred_df = pd.DataFrame({
 })
 
 print(pred_df.head(20))
+
+lr_residuals = ytest - linear_pred
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=ytest, y=lr_residuals)
+plt.title('Analiza ostataka')
+plt.xlabel('Ostatak')
+plt.ylabel('Učestalost')
+plt.show()
+
+plt.figure(figsize=(12, 8))
+sns.barplot(x=linear.coef_, y=xtrain.columns)
+plt.title('Značaj osobine u Linear Regression')
+plt.xlabel('Kvocijent')
+plt.ylabel('Osobina')
+plt.show()

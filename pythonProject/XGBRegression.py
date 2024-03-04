@@ -84,3 +84,23 @@ pred_df = pd.DataFrame({
     'xgb prediction': xgb_pred
 })
 print(pred_df.head(25))
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Residual Analysis
+residuals = ytest - xgb_pred
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=ytest, y=residuals)
+plt.title('Analiza ostataka')
+plt.xlabel('Cene')
+plt.ylabel('Ostaci')
+plt.show()
+
+# Feature Importance Analysis
+plt.figure(figsize=(12, 8))
+sns.barplot(x='impact', y='feature', data=df_impact)
+plt.title('Značaj osobine u XGBoost Modelu')
+plt.xlabel('Uticaj')
+plt.ylabel('Osobina')
+plt.show()

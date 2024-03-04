@@ -10,6 +10,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from Common import data_preprocessing
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV
+from sklearn.tree import plot_tree
 
 xtrain,ytrain,xtest,ytest = data_preprocessing()
 
@@ -85,3 +86,28 @@ print(pred_df.head(20))
 #     'decision tree prediction': decision_tree_pred
 # })
 # print(pred_df_dt.head(20))
+
+# Get feature importances from the trained decision tree
+feature_importances = decision_tree.feature_importances_
+feature_names = xtrain.columns
+
+# Create a DataFrame for better visualization
+df_importance = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importances})
+df_importance = df_importance.sort_values(by='Importance', ascending=False)
+
+residuals = ytest - decision_tree_pred
+
+# Plot residuals
+plt.figure(figsize=(10, 6))
+plt.scatter(ytest, residuals, color='blue')
+plt.title('Decision Tree Residuals')
+plt.xlabel('Actual Prices')
+plt.ylabel('Residuals')
+plt.axhline(y=0, color='r', linestyle='--', linewidth=2)  # Add a horizontal line at y=0
+plt.show()
+
+# Plot the feature importance
+plt.figure(figsize=(12, 8))
+sns.barplot(x='Importance', y='Feature', data=df_importance)
+plt.title('Decision Tree Feature Importance')
+plt.show()

@@ -39,3 +39,13 @@ pred_df = pd.DataFrame({
 })
 
 print(pred_df.head(20))
+
+# Residual Analysis
+svm_residuals = ytest - svm_pred
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=ytest, y=svm_residuals)
+plt.title('Analiza ostataka')
+plt.xlabel('Cene')
+plt.ylabel('Ostaci')
+plt.show()
+

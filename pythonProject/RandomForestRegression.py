@@ -10,6 +10,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 from Common import data_preprocessing
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import GridSearchCV
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 xtrain,ytrain,xtest,ytest = data_preprocessing()
 
@@ -45,3 +47,39 @@ pred_df = pd.DataFrame({
 })
 
 print(pred_df.head(20))
+
+# # Scatter plot
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='price from .csv', y='random forest prediction', data=pred_df)
+plt.title('Cena vs Random Forest Predikcija')
+plt.xlabel('Cena')
+plt.ylabel('Random Forest Predikcija')
+plt.show()
+
+# Bar plot for feature importance
+plt.figure(figsize=(12, 6))
+sns.barplot(x='impact', y='feature', data=df_impact)
+plt.title('Značaj osobine u Random Forest Modelu')
+plt.xlabel('Uticaj')
+plt.ylabel('Osobina')
+plt.show()
+
+#Residual Analysis
+residuals = ytest - rf_pred
+
+plt.figure(figsize=(10, 6))
+sns.histplot(residuals, kde=True)
+plt.title('Analiza ostataka')
+plt.xlabel('Ostatak')
+plt.ylabel('Učestalost')
+plt.show()
+
+# Scatter plot of residuals against predicted values
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=rf_pred, y=residuals)
+plt.title('Ostaci vs Predviđene cene')
+plt.xlabel('Predviđene cene')
+plt.ylabel('Ostaci')
+plt.axhline(y=0, color='r', linestyle='--')
+plt.show()
+
