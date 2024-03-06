@@ -52,46 +52,10 @@ pred_df = pd.DataFrame({
 })
 
 print(pred_df.head(20))
-#
-# decision_tree = DecisionTreeRegressor(random_state=42)
-#
-# grid_search_dt = GridSearchCV(estimator=decision_tree, param_grid=param_grid, scoring='r2', cv=5)
-#
-# grid_search_dt.fit(xtrain, ytrain)
-#
-# best_params_dt = grid_search_dt.best_params_
-#
-# best_decision_tree_model = grid_search_dt.best_estimator_
-#
-# decision_tree_pred = best_decision_tree_model.predict(xtest)
-#
-# r2_dt = r2_score(ytest, decision_tree_pred)
-# adjusted_r2_dt = 1 - ((1 - r2_dt) * (n - 1) / (n - k - 1))
-# mae_dt = mean_absolute_error(ytest, decision_tree_pred)
-# mse_dt = mean_squared_error(ytest, decision_tree_pred)
-# rmse_dt = np.sqrt(mse_dt)
-#
-# print(f"R-squared (R2) for Decision Tree: {r2_dt}")
-# print(f"Adjusted R-squared for Decision Tree: {adjusted_r2_dt}")
-# print(f"Mean Absolute Error for Decision Tree: {mae_dt}")
-# print(f"Mean Squared Error for Decision Tree: {mse_dt}")
-# print(f"Root Mean Squared Error for Decision Tree: {rmse_dt}")
-#
-# df_impact_dt = pd.DataFrame({'feature': xtrain.columns, 'impact': best_decision_tree_model.feature_importances_})
-# df_impact_dt.sort_values(by='impact', ascending=False, inplace=True)
-# print(df_impact_dt)
-#
-# pred_df_dt = pd.DataFrame({
-#     'price from .csv': ytest,
-#     'decision tree prediction': decision_tree_pred
-# })
-# print(pred_df_dt.head(20))
 
-# Get feature importances from the trained decision tree
 feature_importances = decision_tree.feature_importances_
 feature_names = xtrain.columns
 
-# Create a DataFrame for better visualization
 df_importance = pd.DataFrame({'Feature': feature_names, 'Importance': feature_importances})
 df_importance = df_importance.sort_values(by='Importance', ascending=False)
 
