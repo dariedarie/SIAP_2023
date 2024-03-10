@@ -51,6 +51,7 @@ print(pred_df.head(20))
 # # Scatter plot
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x='price from .csv', y='random forest prediction', data=pred_df)
+plt.plot(pred_df['price from .csv'], pred_df['price from .csv'], color='red', linestyle='--', label='Dijagonala')
 plt.title('Cena vs Random Forest Predikcija')
 plt.xlabel('Cena')
 plt.ylabel('Random Forest Predikcija')

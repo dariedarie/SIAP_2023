@@ -42,6 +42,14 @@ pred_df = pd.DataFrame({
 
 print(pred_df.head(20))
 
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='price from .csv', y='linear prediction', data=pred_df)
+plt.plot(pred_df['price from .csv'], pred_df['price from .csv'], color='red', linestyle='--')
+plt.title('Cena vs linear Predikcija')
+plt.xlabel('Cena')
+plt.ylabel('linear Predikcija')
+plt.show()
+
 lr_residuals = ytest - linear_pred
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x=ytest, y=lr_residuals)

@@ -11,6 +11,7 @@ from Common import data_preprocessing
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
 
+
 xtrain,ytrain,xtest,ytest = data_preprocessing()
 
 param_grid = {'colsample_bytree': [1.0], 'gamma': [1], 'learning_rate': [0.1], 'max_depth': [3], 'n_estimators': [100], 'reg_alpha': [0], 'reg_lambda': [0.1], 'subsample': [0.5]}
@@ -54,8 +55,13 @@ pred_df = pd.DataFrame({
 })
 print(pred_df.head(25))
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='price from .csv', y='xgb prediction', data=pred_df)
+plt.plot(pred_df['price from .csv'], pred_df['price from .csv'], color='red', linestyle='--')
+plt.title('Cena vs xgb Predikcija')
+plt.xlabel('Cena')
+plt.ylabel('xgb Predikcija')
+plt.show()
 
 # Residual Analysis
 residuals = ytest - xgb_pred
