@@ -74,4 +74,5 @@ def data_preprocessing():
 
     xtrain, xtest, ytrain, ytest = train_test_split(X, y, test_size=0.3, random_state=42)
 
+
     return xtrain,ytrain,xtest,ytest

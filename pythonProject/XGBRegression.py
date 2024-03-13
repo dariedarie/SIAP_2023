@@ -14,6 +14,7 @@ from sklearn.metrics import make_scorer
 
 xtrain,ytrain,xtest,ytest = data_preprocessing()
 
+
 param_grid = {'colsample_bytree': [1.0], 'gamma': [1], 'learning_rate': [0.1], 'max_depth': [3], 'n_estimators': [100], 'reg_alpha': [0], 'reg_lambda': [0.1], 'subsample': [0.5]}
 
 xgb = XGBRegressor(random_state=42)
@@ -21,7 +22,6 @@ xgb = XGBRegressor(random_state=42)
 scorer = make_scorer(r2_score)
 
 grid_search = GridSearchCV(estimator=xgb, param_grid=param_grid, scoring=scorer, cv=5)
-
 
 grid_search.fit(xtrain, ytrain)
 
